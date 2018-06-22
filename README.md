@@ -31,18 +31,20 @@ In the following steps you will discover the basic steps to use:
 
 ## Creating and using MapR-DB JSON Table
 
+<details>
+<summary>Open the steps: create a table and use MapR-DB Shell</summary>
+
 Open a terminal window and connect using SSH to one node of your cluster
 
-----
-**1- Connect to MapR Cluster**
+### 1- Connect to MapR Cluster
 
 If you are using the MapR Container for Developers connect using the following command: *(`root` password is `mapr`)*
 
 ```
 ssh root@localhost -p 2222 
 ```
-----
-**2- Navigate into MapR-FS**
+
+### 2- Navigate into MapR-FS
 
 You can list content of the MapR File System using the following commands:
 
@@ -69,36 +71,44 @@ where `trainer.mapr.com` is the name of your cluster.
 
 As you can see, you can list the content of MapR File System, that give you access to all the data store on the cluster, that could be made of hundreds or more nodes.
 
-----
-**3- Create a MapR-DB JSON Table**
+
+### 3- Create a MapR-DB JSON Table
 
 MapR provide a command line tool named `maprcli` that allows to manage cluster including resource creation. 
 
+----
 3.1- Let's create a newa table in the `/apps` directory.
+<details> 
 
 ```
 maprcli table create -path /apps/workshop -tabletype json
 ```
+</details> 
 
-
+----
 3.2- Let's also make this table "public" to ease the access from your development environment:
+
+<details> 
 
 ```
 maprcli table cf edit -path /apps/workshop -cfname default -readperm p -writeperm p -traverseperm  p
 ```
 
 This command set the `default` column family permission in read, write and traverse to public `p`. You can find more informations about table permissions in the [MapR Documentation](https://maprdocs.mapr.com/home/MapR-DB/JSON_DB/granting_or_denying_access_to_fields_with_aces.html).
+</details> 
 
 
 
-----
-**4- Use MapR-DB Shell**
+
+### 4- Use MapR-DB Shell
 
 Now that the MapR-DB Table is created you can use MapR-DB Shell to use it.
 
 Run the following commands in to the terminal
 
+-----
 4.1 Insert Data
+<details> 
 
 ```
 mapr dbshell
@@ -125,9 +135,11 @@ maprdb root:> find /apps/workshop
 ```
 
 You can find more information about MapR DB Shell command using: `help`.
+</details> 
 
+-----
 4.2 Query Documents
-
+<details> 
 Now that we have data into MapR-DB, you can find specific documents using the OJAI Query syntax documented [here](https://maprdocs.mapr.com/home/MapR-DB/JSON_DB/OJAIQueryConditionOperators.html) and [MapR-DB Shell Documentation](https://maprdocs.mapr.com/home/MapR-DB/JSON_DB/QueryWithDBShell.html) 
 
 
@@ -140,9 +152,12 @@ Same query but limiting the number of fields returned by the query, using the `-
 ```
 maprdb root:> find /apps/workshop --where '{ "$eq" : { "age" : 35 }  }' --fields _id,name.last
 ```
+</details> 
 
+----
 4.3 Update Documents
 
+<details> 
 You can also use [MapR-DB Shell to update or delete documents(https://maprdocs.mapr.com/home/ReferenceGuide/dbshell-update.html?hl=mutation%2Cdb%2Cjson)]:
  
 Adding a new field:
@@ -186,3 +201,36 @@ maprdb root:> delete /apps/workshop --id doc002
 maprdb root:> find /apps/workshop 
 
 ```
+</details>
+
+</details>
+
+
+## Use MapR-DB from Java
+
+<details>
+<summary>Open the steps: use MapR-DB JSON from Java</summary>
+
+The Java project is a complete Maven project located in the `./java-sample ` folder.
+
+Open the project in your favorite IDE, and then look into the sources:
+
+* `src/main/java/com/mapr/workshop/exercices/`: contains simple skeleton that you have to finish to use MapR-DB JSON from Java
+* `src/main/java/com/mapr/workshop/solutions/`: contains the solutions of the exercices describe above
+
+</details>
+
+
+
+
+## Using Apache Drill to Query MapR-DB
+
+<details>
+<summary>Open the steps: use MapR-DB JSON with Drill</summary>
+
+A very command use case when working with Data is to do analytics. The best language for analytics is SQL, and MapR Converged Platform provide a powerfull distributed SQL query engine: [Apache Drill](https://drill.apache.org/).
+
+Apache Drill allows you to run queries on many datasource: MapR-DB Tables (JSON and Binary), Apache Hbase, MapR-FS with various format.
+
+</details>
+
