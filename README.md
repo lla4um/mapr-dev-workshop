@@ -342,8 +342,13 @@ where true=repeated_contains(categories,'Restaurants');
 
 You can find more queries in the Drill tutorial [here](https://drill.apache.org/docs/analyzing-the-yelp-academic-dataset/)
 
+</details>
 
 ### Drill and MapR-DB
+
+
+<details>
+<summary>Open the steps:</summary>
 
 It is also possible to use MapR-DB JSON with Drill, simply replace the directory or file name by your table name, for example:
 
