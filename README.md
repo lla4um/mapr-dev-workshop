@@ -249,6 +249,7 @@ hadoop fs -mkdir /yelp_tables
 Go to the Drill UI [http://localhost:8047](http://localhost:8047), or Zeppelin to run some SQL Queries:
 
 
+----
 1- View the content of the database:
 
 ```
@@ -256,12 +257,14 @@ select * from  dfs.`/yelp/business.json` limit 1;
 ```
 
 
+----
 2- Total reviews in the data set
 
 ```
 select sum(review_count) as totalreviews from dfs.`/yelp/business.json`;
 ```
 
+----
 3- Top 10 states and cities in total number of reviews
 
 <details>
@@ -275,6 +278,7 @@ group by state, city order by count(*) desc limit 10;
 </details>
 
 
+----
 4- Average number of reviews per business star rating
 
 <details>
@@ -287,6 +291,7 @@ group by stars order by stars desc;
 ```
 </details>
 
+----
 5- Top businesses with high review counts (> 1000)
 
 <details>
@@ -300,6 +305,7 @@ group by stars order by stars desc;
 
 </details>
 
+----
 6- Saturday open and close times for a few businesses
 
 <details>
@@ -315,7 +321,7 @@ b limit 10;
 
 </details>
 
-
+----
 7- Count the number of "Restaurants"
 
 Note: you have to use the `repeated_contains` operator on the `categories` field.
