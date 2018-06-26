@@ -433,3 +433,91 @@ The main change in the explain plan compare to previous queries is:
 
 </details>
 
+
+
+
+## Using Apache Spark on MapR
+
+<details>
+<summary> Open the steps: Apache Spark on MapR<summary>
+
+In this part of the lab you will use the Spark Shell to analyze data.
+
+1- Open Spark Shell
+
+Connect to your cluster and run the following command: (note you can also use Zeppelin)
+
+```
+/opt/mapr/spark/spark-2.1.0/bin/spark-shell
+```
+
+2- Print some data from MapR-DB JSON
+
+To work with MapR-DB JSON You need some imports
+
+```
+scala> import com.mapr.db.spark.sql._
+scala> import org.apache.spark.sql.SparkSession
+
+```
+
+Then load the data, and print the schema and count the number of documents
+
+```
+scala> val dataFromMapR = spark.loadFromMapRDB("/yelp_tables/business")
+scala> dataFromMapR.printSchema
+scala> dataFromMapR.count
+```
+
+4- Group by function 
+
+Count the number of business by city
+
+<details>
+<summary>Solution</summary>
+</details>
+
+```
+scala> dataFromMapR.groupBy("city").count().show()
+```
+
+</details>
+
+
+4- Group by function & filter
+
+Using the group by function find all the city that have more than 10000 businesses
+
+<details>
+<summary>Solution</summary>
+</details>
+
+```
+scala> dataFromMapR.groupBy("city").count().filter("count > 10000").show()
+```
+
+</details>
+
+5- Save the result into MapR-FS
+
+It is a very common use case to process the data with Apache Spark and save the result into files.
+
+Let's for example save the number of business by city into a parquet file :  `/tmp/parquet_result`
+
+<details>
+<summary>Solution</summary>
+</details>
+
+```
+scala> import org.apache.spark.sql.SaveMode
+scala>  dataFromMapR.groupBy("city").count().write.mode(SaveMode.Overwrite).parquet("maprfs:///tmp/parquet_result")
+```
+
+
+You can use Drill (or Spark) to check the result, for example using Drill:
+
+```
+select * from dfs.`/tmp/parquet_result` limit 100
+```
+
+</details>
