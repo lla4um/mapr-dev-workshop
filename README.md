@@ -226,8 +226,6 @@ Open the project in your favorite IDE, and then look into the sources:
 </details>
 
 
-
-
 ## Using Apache Drill and SQL
 
 ### Drill and Files
@@ -537,3 +535,12 @@ select * from dfs.`/tmp/parquet_result` limit 100
 </details>
 
 ----
+
+## MapR Streams:
+
+See [Getting Started Sample](https://github.com/mapr-demos/mapr-streams-60-getting-started)
+
+
+## Other Samples and Application
+
+You can find other samples applications in the [MapR Developer Portal](http://mapr.com/developer-portal) for more application.
