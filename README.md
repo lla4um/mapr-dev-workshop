@@ -357,14 +357,12 @@ It is possible to import the Yelp dataset into Mapr-DB using the following comma
 
 ```
 mapr importJSON -idField business_id -src /yelp/business.json -dst /yelp_tables/business -mapreduce false
-mapr importJSON -idField review_id -src /yelp/review.json -dst /yelp_tables/review -mapreduce false
 ```
 
 Make the tables public if you want to use it from your Java application runnin on your IDE:
 
 ```
 maprcli table cf edit -path /yelp_tables/business -cfname default -readperm p -writeperm p
-maprcli table cf edit -path /yelp_tables/review -cfname default -readperm p -writeperm p
 ```
 
 #### MapR-DB Secondary Indexes
