@@ -444,7 +444,7 @@ The main change in the explain plan compare to previous queries is:
 ## Using Apache Spark on MapR
 
 <details>
-<summary> Open the steps: Apache Spark on MapR<summary>
+<summary> Open the steps: Apache Spark on MapR</summary>
 
 In this part of the lab you will use the Spark Shell to analyze data.
 
