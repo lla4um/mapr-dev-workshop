@@ -11,9 +11,7 @@ This workshop is using various sample codes available in MapR GitHub repository:
     * a VM that you can download from [here](https://mapr.com/products/mapr-sandbox-hadoop/)
     * the Mapr Container for Developers (OSX only), see the instructions [here](https://maprdocs.mapr.com/home/MapRContainerDevelopers/MapRContainerDevelopersOverview.html).
 
-* [Install and configure](https://maprdocs.mapr.com/home/AdvancedInstallation/SettingUptheClient-install-mapr-client.html) the MapR client on your developer environment
-    * test the installation using the following command:
-        ``` hadoop fs -ls / ``
+
 
 
 
@@ -207,6 +205,13 @@ maprdb root:> find /apps/workshop
 
 
 ## Use MapR-DB from Java
+
+To work with Java, on your local development machine you have to:
+
+* [Install and configure](https://maprdocs.mapr.com/home/AdvancedInstallation/SettingUptheClient-install-mapr-client.html) the MapR client on your developer environment
+    * test the installation using the following command:
+        ``` hadoop fs -ls / ``
+
 
 <details>
 <summary>Open the steps: use MapR-DB JSON from Java</summary>
