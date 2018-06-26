@@ -475,7 +475,6 @@ Count the number of business by city
 
 <details>
 <summary>Solution</summary>
-</details>
 
 ```
 scala> dataFromMapR.groupBy("city").count().show()
@@ -490,7 +489,6 @@ Using the group by function find all the city that have more than 10000 business
 
 <details>
 <summary>Solution</summary>
-</details>
 
 ```
 scala> dataFromMapR.groupBy("city").count().filter("count > 10000").show()
@@ -506,7 +504,6 @@ Let's for example save the number of business by city into a parquet file :  `/t
 
 <details>
 <summary>Solution</summary>
-</details>
 
 ```
 scala> import org.apache.spark.sql.SaveMode
