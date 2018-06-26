@@ -226,7 +226,7 @@ Open the project in your favorite IDE, and then look into the sources:
 ## Using Apache Drill and SQL
 
 <details>
-<summary>Open the steps: use MapR-DB JSON with Drill</summary>
+<summary>Open the steps:</summary>
 
 A very command use case when working with Data is to do analytics. The best language for analytics is SQL, and MapR Converged Platform provide a powerfull distributed SQL query engine: [Apache Drill](https://drill.apache.org/).
 
@@ -266,6 +266,7 @@ select sum(review_count) as totalreviews from dfs.`/yelp/business.json`;
 
 <details>
 <summary>Solution</summary>
+
 ```
 select state, city, count(*) totalreviews 
 from dfs.`/yelp/business.json` 
@@ -278,6 +279,7 @@ group by state, city order by count(*) desc limit 10;
 
 <details>
 <summary>Solution</summary>
+
 ```
 select stars,trunc(avg(review_count)) reviewsavg 
 from dfs.`/yelp/business.json`
@@ -289,17 +291,20 @@ group by stars order by stars desc;
 
 <details>
 <summary>Solution</summary>
+
 ```
 select stars,trunc(avg(review_count)) reviewsavg 
 from dfs.`/yelp/business.json`
 group by stars order by stars desc;
 ```
+
 </details>
 
 6- Saturday open and close times for a few businesses
 
 <details>
 <summary>Solution</summary>
+
 ```
 select b.name, b.hours.Saturday.`open`,
 b.hours.Saturday.`close`  
@@ -307,6 +312,7 @@ from
 dfs.`/yelp/business.json`
 b limit 10;
 ```
+
 </details>
 
 
@@ -316,14 +322,14 @@ Note: you have to use the `repeated_contains` operator on the `categories` field
 
 <details>
 <summary>Solution</summary>
+
 ```
 select count(*) as TotalRestaurants 
 from dfs.`/yelp/business.json` 
 where true=repeated_contains(categories,'Restaurants');
 ```
-</details>
 
-select count(*) as TotalRestaurants from dfs.`/yelp/business.json` where true=repeated_contains(categories,'Restaurants');
+</details>
 
 
 
