@@ -225,6 +225,8 @@ Open the project in your favorite IDE, and then look into the sources:
 
 ## Using Apache Drill and SQL
 
+### Drill and Files
+
 <details>
 <summary>Open the steps:</summary>
 
@@ -338,6 +340,98 @@ where true=repeated_contains(categories,'Restaurants');
 </details>
 
 
+You can find more queries in the Drill tutorial [here](https://drill.apache.org/docs/analyzing-the-yelp-academic-dataset/)
+
+
+### Drill and MapR-DB
+
+It is also possible to use MapR-DB JSON with Drill, simply replace the directory or file name by your table name, for example:
+
+```
+select * from dfs.`/apps/workshop`
+```
+
+
+It is possible to import the Yelp dataset into Mapr-DB using the following command, that you run on your MapR Cluster:
+
+
+```
+mapr importJSON -idField business_id -src /yelp/business.json -dst /yelp_tables/business -mapreduce false
+mapr importJSON -idField review_id -src /yelp/review.json -dst /yelp_tables/review -mapreduce false
+```
+
+Make the tables public if you want to use it from your Java application runnin on your IDE:
+
+```
+maprcli table cf edit -path /yelp_tables/business -cfname default -readperm p -writeperm p
+maprcli table cf edit -path /yelp_tables/review -cfname default -readperm p -writeperm p
+```
+
+#### MapR-DB Secondary Indexes
+
+<details>
+
+
+Run the following query:
+
+```
+select name, stars from dfs.`/yelp_tables/business` where stars = 5;
+```
+
+**Simple Index**
+
+You can now improve the performance of this query using an index. In a new terminal window run the following command to create an index on the `stars` field sorted in descending order (`-1`).
+
+```
+maprcli table index add -path /yelp_tables/business -index idx_stars -indexedfields 'stars:-1'
+```
+
+If you execute the query, multiple times, now it should be faster, since the index is used.
+
+In this case Apache Drill is using the index to find all the stars equal to 5, then retrieve the name of the business from the document itself.
+
+You can use the `EXPLAIN PLAN` command or use the `Profiles` tab to see how drill is executing the query.
+
+The result of the explain plan will be a JSON document explaining the query plan, you can look in the `scanSpec` attribute that use the index if present. You can look at the following attributes in the `scanSpec` attribute:
+
+* `secondaryIndex` equals true when a secondary index is created
+* `startRow` and `stopRow` that show the index key used by the query
+* `indexName` set to `idx_stars` that is the index used by the query
+
+
+If you want to delete the index to compare the execution plan run the followind command as `mapr` in a terminal:
+
+```
+maprcli table index remove -path /yelp_tables/business -index idx_stars  
+```
+
+**Covering Queries**
+
+In the index you have created in the previous step, we have specific the `-indexedfields` parameter to set the index key with the `stars` values. It is also possible to add some non indexed field to the index using the `-includedfields`. 
+
+In this case the index includes some other fields that could be used by applications to allow the query to only access the index without having to retrieve any value from the JSON table itself.
+
+Let's recreate the index on `stars` field and add the `name` to the list of included fields.
+
+```
+# if you have not deleted the index yet
+$ maprcli table index remove -path /yelp_tables/business -index idx_stars  
+
+$ maprcli table index add -path /yelp_tables/business -index idx_stars -indexedfields 'stars:-1' -includedfields 'name'
+```
+
+If you execute the query, multiple times, now it should be even faster than previous queries since Drill is doing a covered queries, only accessing the index.
+
+Look at the profiling of the following query using the new index
+```
+select name, stars from dfs.`/yelp_tables/business` where stars = 5;
+```
+
+The main change in the explain plan compare to previous queries is:
+
+* `includedFields` attribute that show the fields used by the queries.
+
+</details>
 
 </details>
 
