@@ -469,7 +469,7 @@ scala> dataFromMapR.printSchema
 scala> dataFromMapR.count
 ```
 
-4- Group by function 
+3- Group by function 
 
 Count the number of business by city
 
