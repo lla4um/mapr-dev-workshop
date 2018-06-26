@@ -223,7 +223,7 @@ Open the project in your favorite IDE, and then look into the sources:
 
 
 
-## Using Apache Drill to Query MapR-DB
+## Using Apache Drill and SQL
 
 <details>
 <summary>Open the steps: use MapR-DB JSON with Drill</summary>
@@ -231,6 +231,101 @@ Open the project in your favorite IDE, and then look into the sources:
 A very command use case when working with Data is to do analytics. The best language for analytics is SQL, and MapR Converged Platform provide a powerfull distributed SQL query engine: [Apache Drill](https://drill.apache.org/).
 
 Apache Drill allows you to run queries on many datasource: MapR-DB Tables (JSON and Binary), Apache Hbase, MapR-FS with various format.
+
+For this part of the workshop, you will use the Yelp JSON Dataset available [here](https://www.yelp.com/dataset_challenge). **(note: the dataset has been installed on the workshop VMs)**
+
+### 1- Import the JSON documents into MapR-DB JSON tables
+
+We will import the Yelp JSON documents into MapR-DB JSON tables using the [mapr importJSON](https://maprdocs.mapr.com/home/ReferenceGuide/mapr_importjson.html?hl=importjson) command. Note, the source file path specified in `mapr importJSON` must be a valid path in the MapR filesystem. 
+
+On your cluster:
+
+If not already present, create folders for Yelp dataset (tables and files)
+```
+hadoop fs -mkdir /yelp
+hadoop fs -mkdir /yelp_tables
+```
+
+Go to the Drill UI [http://localhost:8047](http://localhost:8047), or Zeppelin to run some SQL Queries:
+
+
+1- View the content of the database:
+
+```
+select * from  dfs.`/yelp/business.json` limit 1;
+```
+
+
+2- Total reviews in the data set
+
+```
+select sum(review_count) as totalreviews from dfs.`/yelp/business.json`;
+```
+
+3- Top 10 states and cities in total number of reviews
+
+<details>
+<summary>Solution</summary>
+```
+select state, city, count(*) totalreviews 
+from dfs.`/yelp/business.json` 
+group by state, city order by count(*) desc limit 10;
+```
+</details>
+
+
+4- Average number of reviews per business star rating
+
+<details>
+<summary>Solution</summary>
+```
+select stars,trunc(avg(review_count)) reviewsavg 
+from dfs.`/yelp/business.json`
+group by stars order by stars desc;
+```
+</details>
+
+5- Top businesses with high review counts (> 1000)
+
+<details>
+<summary>Solution</summary>
+```
+select stars,trunc(avg(review_count)) reviewsavg 
+from dfs.`/yelp/business.json`
+group by stars order by stars desc;
+```
+</details>
+
+6- Saturday open and close times for a few businesses
+
+<details>
+<summary>Solution</summary>
+```
+select b.name, b.hours.Saturday.`open`,
+b.hours.Saturday.`close`  
+from
+dfs.`/yelp/business.json`
+b limit 10;
+```
+</details>
+
+
+7- Count the number of "Restaurants"
+
+Note: you have to use the `repeated_contains` operator on the `categories` field.
+
+<details>
+<summary>Solution</summary>
+```
+select count(*) as TotalRestaurants 
+from dfs.`/yelp/business.json` 
+where true=repeated_contains(categories,'Restaurants');
+```
+</details>
+
+select count(*) as TotalRestaurants from dfs.`/yelp/business.json` where true=repeated_contains(categories,'Restaurants');
+
+
 
 </details>
 
