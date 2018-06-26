@@ -228,7 +228,7 @@ Open the project in your favorite IDE, and then look into the sources:
 ### Drill and Files
 
 <details>
-<summary>Open the steps:</summary>
+<summary>Open the steps: Drill on MapR-FS</summary>
 
 A very command use case when working with Data is to do analytics. The best language for analytics is SQL, and MapR Converged Platform provide a powerfull distributed SQL query engine: [Apache Drill](https://drill.apache.org/).
 
@@ -348,7 +348,7 @@ You can find more queries in the Drill tutorial [here](https://drill.apache.org/
 
 
 <details>
-<summary>Open the steps:</summary>
+<summary>Open the steps: Drill on MapR-DB</summary>
 
 It is also possible to use MapR-DB JSON with Drill, simply replace the directory or file name by your table name, for example:
 
@@ -530,3 +530,5 @@ select * from dfs.`/tmp/parquet_result` limit 100
 </details>
 
 </details>
+
+----
